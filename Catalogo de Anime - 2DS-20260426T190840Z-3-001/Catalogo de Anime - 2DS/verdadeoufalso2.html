@@ -1,0 +1,28 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Verdadeiro ou Falso 2 - 2026</title>
+</head>
+
+<body>
+    <div class="terceira-questao" id="">
+        <h1>Verdade ou falso?</h1>
+        <p>O anime "One Punch Man" tem data prevista para continuação em 2026.</p>
+        <div class="botao">
+            <button onclick="saveAnswer('verdadeiro', 'verdadeoufalso3.html')">Verdadeiro</button>
+            <button onclick="saveAnswer('falso', 'verdadeoufalso3.html')">Falso</button>
+        </div>
+    </div>
+
+    <script>
+        function saveAnswer(answer, nextPage) {
+            localStorage.setItem('resposta_q2', answer);
+            window.location.href = nextPage;
+        }
+    </script>
+</body>
+
+</html>

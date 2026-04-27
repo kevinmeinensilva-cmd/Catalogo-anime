@@ -1,0 +1,72 @@
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Catálogo de Animes 2026</title>
+</head>
+
+<body>
+    <div class="recepcao">
+        <h1>Catálogo de Animes 2026</h1>
+        <p>Este site usa um servidor Node.js para carregar e adicionar itens dinamicamente. Abra a página e veja os animes carregados pelo backend.</p>
+    </div>
+
+    <section class="catalogo">
+        <h2>Itens do servidor</h2>
+        <div id="itemsList" class="items-grid"></div>
+    </section>
+
+    <section class="adicionar-item">
+        <h2>Adicionar novo anime</h2>
+        <form id="itemForm">
+            <input id="nome" type="text" placeholder="Nome do anime" required>
+            <input id="descricao" type="text" placeholder="Descrição breve" required>
+            <input id="imagem" type="url" placeholder="URL da imagem" required>
+            <button type="submit">Adicionar</button>
+        </form>
+    </section>
+
+    <script>
+        async function carregarItens() {
+            const response = await fetch('/itens');
+            const itens = await response.json();
+            const container = document.getElementById('itemsList');
+            container.innerHTML = itens.map(item => `
+                <article class="item-card">
+                    <img src="${item.imagem}" alt="${item.nome}" class="item-image" />
+                    <h3>${item.nome}</h3>
+                    <p>${item.descricao}</p>
+                </article>
+            `).join('');
+        }
+
+        async function adicionarItem(event) {
+            event.preventDefault();
+            const nome = document.getElementById('nome').value.trim();
+            const descricao = document.getElementById('descricao').value.trim();
+            const imagem = document.getElementById('imagem').value.trim();
+
+            if (!nome || !descricao || !imagem) return;
+
+            const response = await fetch('/itens', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ nome, descricao, imagem })
+            });
+
+            if (response.ok) {
+                document.getElementById('itemForm').reset();
+                carregarItens();
+            } else {
+                alert('Erro ao adicionar item. Preencha todos os campos corretamente.');
+            }
+        }
+
+        document.getElementById('itemForm').addEventListener('submit', adicionarItem);
+        window.addEventListener('DOMContentLoaded', carregarItens);
+    </script>
+</body>
+
+</html>
